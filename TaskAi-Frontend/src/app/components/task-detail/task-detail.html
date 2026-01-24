@@ -1,0 +1,77 @@
+<div class="detail-container" *ngIf="task">
+  <div class="header">
+    <button class="btn-back" routerLink="/tasks">
+      <span class="arrow">←</span> Back to Dashboard
+    </button>
+    <div class="actions">
+      <button class="btn-edit" (click)="isEditing = !isEditing">
+        {{ isEditing ? 'Cancel' : 'Edit Task' }}
+      </button>
+      <button class="btn-delete" (click)="onDelete()">Delete Task</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div *ngIf="!isEditing" class="fade-in">
+      <span class="category-badge" *ngIf="task.category">{{ task.category }}</span>
+      <h1 class="task-title">{{ task.title }}</h1>
+      <p class="description">{{ task.description || 'No description provided.' }}</p>
+      
+      <div class="meta-grid">
+        <div class="meta-item">
+          <strong>Priority</strong>
+          <span class="priority-tag" [attr.data-priority]="task.priority">{{ task.priority }}</span>
+        </div>
+        <div class="meta-item">
+          <strong>Status</strong>
+          <span class="status-text">{{ task.status }}</span>
+        </div>
+        <div class="meta-item">
+          <strong>Due Date</strong>
+          <span class="date-text">{{ task.dueDate ? (task.dueDate | date:'fullDate') : 'No date set' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <form *ngIf="isEditing" (ngSubmit)="onUpdate()" class="task-form fade-in">
+      <div class="form-group">
+        <label>Task Title</label>
+        <input [(ngModel)]="task.title" name="title" required placeholder="Enter title..." />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Priority</label>
+          <select [(ngModel)]="task.priority" name="priority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select [(ngModel)]="task.status" name="status">
+            <option value="To Do">To Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <input [(ngModel)]="task.category" 
+              name="category" 
+              class="modern-input"
+              placeholder="e.g. Work, Personal, Shopping" />
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="task.description" name="description" placeholder="Describe the task..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-save-changes">Save Changes</button>
+    </form>
+  </div>
+</div>

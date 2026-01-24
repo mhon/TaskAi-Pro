@@ -1,0 +1,212 @@
+.ai-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.ai-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(79, 70, 229, 0.1);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+  border-left: 6px solid #4f46e5;
+}
+
+.ai-icon {
+  font-size: 1.5rem;
+  background: #eef2ff;
+  padding: 0.5rem;
+  border-radius: 12px;
+}
+
+.conversational-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #334155;
+  font-style: italic;
+}
+
+/* Drop Zone UI */
+.drop-zone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.drop-zone:hover {
+  border-color: #4f46e5;
+  background: #f8fafc;
+}
+
+/* Shimmer Loading Animation */
+.loading-shimmer .line {
+  height: 12px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.ai-page-wrapper {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.ai-navigation { margin-bottom: 1.5rem; }
+
+.btn-back {
+  background: transparent;
+  border: none;
+  color: #6366f1;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.ai-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.ai-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.ai-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.btn-generate {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.conversational-text {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: #334155;
+  line-height: 1.6;
+  border-left: 4px solid #6366f1;
+}
+
+/* Document Extraction Styles */
+.drop-zone {
+  border: 2px dashed #cbd5e1;
+  padding: 2.5rem;
+  border-radius: 16px;
+  text-align: center;
+  margin: 1.5rem 0;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.drop-zone:hover {
+  border-color: #6366f1;
+  background: #f0f7ff;
+}
+
+.insight-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1f5f9;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ai-container { grid-template-columns: 1fr; }
+}
+
+
+/* Add this to ai-dashboard.css for a polished feel */
+.insight-item {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.insight-item:hover {
+  transform: scale(1.02);
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.task-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.task-date {
+  color: #64748b;
+  display: block;
+  font-size: 0.8rem;
+}
+
+.insight-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #fdfdff;
+  border: 1px solid #eef2ff;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.insight-item:hover {
+  border-color: #6366f1;
+  background: #f5f3ff;
+}
+
+.btn-add-mini {
+  background: #6366f1;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-add-mini:hover {
+  background: #4f46e5;
+}

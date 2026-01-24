@@ -1,0 +1,6 @@
+@Task_List_Application_with_AI_Integration_HostAddress = http://localhost:5094
+
+GET {{Task_List_Application_with_AI_Integration_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

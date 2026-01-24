@@ -1,0 +1,45 @@
+<div class="ai-container">
+    <header class="ai-navigation">
+        <button class="btn-back" routerLink="/tasks">← Back to Dashboard</button>
+    </header>
+  <div class="ai-card summary-card">
+    <div class="ai-header">
+      <span class="ai-icon">✨</span>
+      <h2>AI Task Intelligence</h2>
+      <button class="btn-generate" (click)="generateSummary()" [disabled]="loadingSummary">
+        {{ loadingSummary ? 'Generating...' : 'Refresh Summary' }}
+      </button>
+    </div>
+    
+    <div class="summary-content" *ngIf="aiSummary">
+      <p class="conversational-text">{{ aiSummary }}</p>
+    </div>
+    
+    <div class="loading-shimmer" *ngIf="loadingSummary">
+      <div class="line"></div><div class="line"></div><div class="line"></div>
+    </div>
+  </div>
+
+  <div class="ai-card upload-card">
+    <h3>Smart Task Extraction</h3>
+    <p class="subtext">Upload PDF or .msg files to extract action items instantly.</p>
+    
+    <div class="drop-zone" (click)="fileInput.click()" [class.dragging]="isDragging">
+      <input type="file" #fileInput (change)="onFileSelected($event)" hidden accept=".pdf,.msg,.eml,.docx">
+      <div class="upload-info">
+        <span class="upload-icon">📄</span>
+        <p>Click or drag file here to analyze</p>
+      </div>
+    </div>
+
+    <div class="results-area" *ngIf="extractedData" class="fade-in">
+      <h4>Extracted Insights</h4>
+      <div class="insight-grid">
+        <div class="insight-item" *ngFor="let item of extractedData.tasks">
+          <span>{{ item.taskName }}</span>
+          <button class="btn-add-mini" (click)="createFromAi(item)">+ Create Task</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

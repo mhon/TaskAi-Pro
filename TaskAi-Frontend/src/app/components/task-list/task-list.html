@@ -1,0 +1,52 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>My TaskAi Dashboard</h1>
+    <button class="btn-logout" (click)="logout()">Logout</button>
+
+    
+  </header>
+
+  <section class="add-task-section">
+    <button class="btn-ai-sparkle" routerLink="/ai-insights">
+      <span class="sparkle">✨</span> AI Task Insights
+    </button>
+    <button class="btn-toggle" (click)="showAddForm = !showAddForm">
+      {{ showAddForm ? 'Close' : '+ Add New Task' }}
+    </button>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onAddTask()" *ngIf="showAddForm" class="task-form">
+      <div class="form-row">
+        <input formControlName="title" placeholder="Task Title" />
+        <input type="date" formControlName="dueDate" />
+        <select formControlName="priority">
+          <option value="Low">Low Priority</option>
+          <option value="Medium">Medium Priority</option>
+          <option value="High">High Priority</option>
+        </select>
+        <input formControlName="category" placeholder="Category (e.g. Work)" />
+      </div>
+      <textarea formControlName="description" placeholder="Task Description"></textarea>
+      <button type="submit" [disabled]="taskForm.invalid" class="btn-save">Save Task</button>
+    </form>
+  </section>
+
+  <hr class="divider" />
+
+  <div class="task-grid">
+    <div class="task-card" *ngFor="let task of tasks" [routerLink]="['/tasks', task.id]">
+      <div class="task-status" [class.completed]="task.status === 'Completed'"></div>
+      <div class="task-content">
+        <h3>{{ task.title }}</h3>
+        <p>{{ task.description | slice:0:100 }}{{ task.description.length > 100 ? '...' : '' }}</p>
+        <div class="task-footer">
+          <small>Due: {{ task.dueDate | date }}</small>
+          <span class="view-link">View Details →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="tasks.length === 0" class="empty-state">
+    <p>No tasks found. Click "+ Add New Task" to get started!</p>
+  </div>
+</div>
