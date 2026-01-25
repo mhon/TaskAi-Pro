@@ -3,7 +3,7 @@ body {
   padding: 0;
   background-color: #f4f7fe;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}/* You can add global styles to this file, and also import other style files */
+}
 
 .form-container {
     max-width: 400px;
@@ -19,7 +19,7 @@ body {
 }
 
 input.ng-invalid.ng-touched {
-    border-color: #dc3545; /* Red border if invalid and touched */
+    border-color: #dc3545;
 }
 
 .error-message {

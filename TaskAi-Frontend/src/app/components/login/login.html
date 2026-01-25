@@ -1,35 +1,30 @@
 <div class="login-wrapper">
   <div class="login-card">
     <h2>TaskAi Login</h2>
-    <p>Please enter your credentials</p>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" formControlName="email" placeholder="email@example.com" />
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-msg">
+          Please enter a valid email.
+        </div>
+      </div>
 
-    <form (submit)="onSubmit()">
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="Enter password" />
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-msg">
+          Password is required.
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="server-error-box">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid" class="btn-login">Sign In</button>
       
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          [(ngModel)]="loginData.email" 
-          placeholder="Enter your email" 
-          required />
-      </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          [(ngModel)]="loginData.password" 
-          name="password" 
-          placeholder="Enter password" 
-          required />
-      </div>
-
-      <button type="submit" class="btn-login">Sign In</button>
     </form>
-
     <div class="footer-links">
       <span>Don't have an account?</span>
       <a routerLink="/register">Register here</a>

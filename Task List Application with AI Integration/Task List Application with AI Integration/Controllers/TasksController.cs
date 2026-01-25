@@ -138,6 +138,7 @@ namespace TaskAi.Api.Controllers
                 UserId = Guid.Parse(userIdString),
                 Title = request.Title,
                 Description = request.Description,
+                Category = request.Category,
                 DueDate = DateTime.SpecifyKind(request.DueDate ?? DateTime.UtcNow, DateTimeKind.Utc),
                 Status = request.Status ?? "To Do",
                 CreatedAt = DateTime.UtcNow,

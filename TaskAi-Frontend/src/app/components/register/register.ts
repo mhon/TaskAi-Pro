@@ -1,37 +1,51 @@
-import { Component, inject } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
-export class Register {
-  private authService = inject(AuthService);
-  private router = inject(Router);
+export class RegisterComponent {
+  registerForm: FormGroup;
+  errorMessage: string = '';
 
-  registerData = {
-    username: '',
-    password: '',
-    email: ''
-  };
-
-  onRegister() {
-    this.authService.register(this.registerData).subscribe({
-      next: () => {
-        alert('Registration successful! Please login.');
-        this.router.navigate(['/login']);
-      },
-      error: (err: any) => { // Added ': any' to fix the type error
-        console.error(err); // Using the variable to fix the 'never read' error
-        alert('Registration failed. Username might be taken.');
-      }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.registerForm = this.fb.group({
+      fullName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
+  onRegister() {
+    if (this.registerForm.valid) {
+      this.errorMessage = '';
+      this.authService.register(this.registerForm.value).subscribe({
+        next: (response) => {
+          alert('Registration successful!');
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          if (typeof err.error === 'string') {
+            this.errorMessage = err.error;
+          } else {
+            this.errorMessage = err.error?.message || 'An unexpected error occurred.';
+          }
+          this.cdr.detectChanges(); 
+          console.log('Variable this.errorMessage is now:', this.errorMessage);
+        }
+      });
+    }
+  }
 }

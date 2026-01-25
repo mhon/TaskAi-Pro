@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 85vh; /* Centers the card vertically */
-  background-color: #f4f7fe; /* Light subtle background */
+  height: 85vh;
+  background-color: #f4f7fe;
 }
 
 .login-card {
@@ -34,18 +34,16 @@ p {
 
 label {
   display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #444;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 input {
   width: 100%;
-  padding: 12px;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 input:focus {
@@ -89,3 +87,14 @@ input:focus {
   text-decoration: underline;
 }
 
+.server-error-box {
+    display: block !important;
+    color: #721c24 !important;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+}
