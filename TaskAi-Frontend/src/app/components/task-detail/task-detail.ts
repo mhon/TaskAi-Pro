@@ -32,19 +32,14 @@ export class TaskDetailComponent implements OnInit {
         },
         error: (err) => {
           console.error('API Error details:', err);
-          // Temporarily comment this out to stay on the page and see errors
-          // this.router.navigate(['/tasks']); 
         }
       });
     }
   }
 
   onUpdate() {
-  // 1. Create a clean payload to send to the API
   const taskPayload = {
     ...this.task,
-    // Ensure category is at least an empty string if null, 
-    // to prevent fecthing/saving issues
     category: this.task.category || "" 
   };
 

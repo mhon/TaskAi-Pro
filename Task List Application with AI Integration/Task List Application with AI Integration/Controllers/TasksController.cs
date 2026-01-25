@@ -163,6 +163,7 @@ namespace TaskAi.Api.Controllers
 
             task.Title = request.Title;
             task.Description = request.Description;
+            task.Category = request.Category;
             task.DueDate = request.DueDate;
             task.Status = request.Status;
             task.UpdatedAt = DateTime.UtcNow;

@@ -11,7 +11,8 @@
 .vs/
 .vscode/
 # Exclude appsettings during final push to keep secrets safe
-# appsettings.json 
+**/appsettings.json
+**/appsettings.Development.json
 
 # ==========================================
 # Angular / Node.js
