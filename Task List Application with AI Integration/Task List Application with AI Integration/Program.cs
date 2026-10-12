@@ -49,7 +49,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Bind JwtSettings from appsettings.json
 var jwtSection = builder.Configuration.GetSection("JwtSettings");
-builder.Services.Configure<JwtSettings>(jwtSection);
 var jwtSettings = jwtSection.Get<JwtSettings>() ?? new JwtSettings();
 if (string.IsNullOrWhiteSpace(jwtSettings.SecretKey))
     jwtSettings.SecretKey = builder.Configuration["SESSION_SECRET"] ?? string.Empty;
@@ -58,6 +57,14 @@ if (string.IsNullOrWhiteSpace(jwtSettings.SecretKey) || Encoding.UTF8.GetByteCou
 {
     throw new InvalidOperationException("Configure a JWT secret of at least 32 bytes using JwtSettings:SecretKey or SESSION_SECRET.");
 }
+
+builder.Services.Configure<JwtSettings>(settings =>
+{
+    settings.Issuer = jwtSettings.Issuer;
+    settings.Audience = jwtSettings.Audience;
+    settings.ExpirationMinutes = jwtSettings.ExpirationMinutes;
+    settings.SecretKey = jwtSettings.SecretKey;
+});
 
 // Configure Authentication
 builder.Services.AddAuthentication(options =>

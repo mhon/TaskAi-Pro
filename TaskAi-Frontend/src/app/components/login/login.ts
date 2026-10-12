@@ -33,11 +33,9 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe({
         next: () => this.router.navigate(['/tasks']),
         error: (err) => {
-          if (typeof err.error === 'string') {
-            this.errorMessage = err.error;
-          } else {
-            this.errorMessage = 'Invalid email or password.';
-          }
+          this.errorMessage = err.status === 401
+            ? 'Invalid email or password.'
+            : 'Sign-in is temporarily unavailable. Please try again.';
           this.cdr.detectChanges();
         }
       });
