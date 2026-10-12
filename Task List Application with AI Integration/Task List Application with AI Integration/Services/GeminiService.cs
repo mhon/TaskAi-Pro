@@ -11,7 +11,8 @@ namespace TaskAi.Api.Services
 
         public GeminiService(IConfiguration config)
         {
-            _apiKey = config["Gemini:ApiKey"] ?? throw new ArgumentNullException("Gemini ApiKey missing");
+            _apiKey = config["Gemini:ApiKey"] ?? config["GEMINI_API_KEY"]
+                ?? throw new InvalidOperationException("Configure Gemini:ApiKey or GEMINI_API_KEY to use AI features.");
             _googleAi = new GoogleAI(_apiKey);
             // Using gemini-2.5-flash
             _model = _googleAi.GenerativeModel("gemini-2.5-flash");

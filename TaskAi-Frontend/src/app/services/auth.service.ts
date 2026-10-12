@@ -8,7 +8,7 @@ import { LoginResponse } from '../models/auth.model';
 export class AuthService {
   private platformId = inject(PLATFORM_ID)
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:5094/api/auth'; // Double-check your .NET port!
+  private apiUrl = '/api/auth';
 
   login(credentials: any): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(

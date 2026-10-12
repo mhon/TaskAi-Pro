@@ -8,9 +8,6 @@ using TaskAi.Api.Data;
 using TaskAi.Api.Models;
 using TaskAi.Api.Services;
 
-// This helps see the exact reason for JWT failures in the console output
-IdentityModelEventSource.ShowPII = true;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // ---------------------------------------------------------
@@ -28,16 +25,38 @@ builder.Services.AddOpenApi();
 
 // Database setup
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        var databaseUrl = builder.Configuration["DATABASE_URL"]
+            ?? throw new InvalidOperationException("DATABASE_URL or ConnectionStrings:DefaultConnection must be configured.");
+        var databaseUri = new Uri(databaseUrl);
+        var databaseName = Uri.UnescapeDataString(databaseUri.AbsolutePath.TrimStart('/'));
+        connectionString = new Npgsql.NpgsqlConnectionStringBuilder
+        {
+            Host = databaseUri.Host,
+            Port = databaseUri.Port > 0 ? databaseUri.Port : 5432,
+            Database = databaseName,
+            Username = Uri.UnescapeDataString(databaseUri.UserInfo.Split(':')[0]),
+            Password = Uri.UnescapeDataString(databaseUri.UserInfo.Split(':').Skip(1).FirstOrDefault() ?? ""),
+            SslMode = Npgsql.SslMode.Disable
+        }.ConnectionString;
+    }
+
+    options.UseNpgsql(connectionString);
+});
 
 // Bind JwtSettings from appsettings.json
 var jwtSection = builder.Configuration.GetSection("JwtSettings");
 builder.Services.Configure<JwtSettings>(jwtSection);
-var jwtSettings = jwtSection.Get<JwtSettings>();
+var jwtSettings = jwtSection.Get<JwtSettings>() ?? new JwtSettings();
+if (string.IsNullOrWhiteSpace(jwtSettings.SecretKey))
+    jwtSettings.SecretKey = builder.Configuration["SESSION_SECRET"] ?? string.Empty;
 
-if (jwtSettings == null || string.IsNullOrEmpty(jwtSettings.SecretKey))
+if (string.IsNullOrWhiteSpace(jwtSettings.SecretKey) || Encoding.UTF8.GetByteCount(jwtSettings.SecretKey) < 32)
 {
-    throw new Exception("JWT SecretKey is missing in appsettings.json");
+    throw new InvalidOperationException("Configure a JWT secret of at least 32 bytes using JwtSettings:SecretKey or SESSION_SECRET.");
 }
 
 // Configure Authentication
@@ -52,13 +71,11 @@ builder.Services.AddAuthentication(options =>
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        // Temporary relaxed validation to bypass "Unable to decode" ghosts
         ValidateIssuer = false,
         ValidateAudience = false,
-        ValidateLifetime = false,
+        ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        // Hardcoded key to match the one in AuthController.cs
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("abcdefghijklmnopqrstuvwxyzabcdef")),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
         ClockSkew = TimeSpan.Zero
     };
 
@@ -66,10 +83,7 @@ builder.Services.AddAuthentication(options =>
     {
         OnAuthenticationFailed = context =>
         {
-            Console.WriteLine("========== DETAILED AUTH FAILURE ==========");
-            // This prints the Stack Trace, which tells us the exact line in the .NET library that failed
-            Console.WriteLine(context.Exception.ToString());
-            Console.WriteLine("===========================================");
+            Console.WriteLine($"Authentication failed: {context.Exception.GetType().Name}");
             return Task.CompletedTask;
         },
         OnTokenValidated = context =>
@@ -93,8 +107,6 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
-
-builder.Services.AddControllers();
 
 // ---------------------------------------------------------
 // 2. MIDDLEWARE PIPELINE

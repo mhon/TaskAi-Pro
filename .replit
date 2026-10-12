@@ -5,3 +5,35 @@ channel = "stable-25_05"
 
 [agent]
 expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bash -c 'dotnet run --no-launch-profile --project \"Task List Application with AI Integration/Task List Application with AI Integration/Task List Application with AI Integration.csproj\" --urls http://0.0.0.0:5001 & api_pid=$!; trap \"kill $api_pid 2>/dev/null || true\" EXIT; cd TaskAi-Frontend && npm start -- --host 0.0.0.0 --port 5000'"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 5001
+externalPort = 3000

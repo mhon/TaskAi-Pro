@@ -19,7 +19,7 @@ export interface Task {
 export class TaskService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
-  private apiUrl = 'http://localhost:5094/api/tasks';
+  private apiUrl = '/api/tasks';
 
   private getHeaders() {
     const token = this.authService.getToken();

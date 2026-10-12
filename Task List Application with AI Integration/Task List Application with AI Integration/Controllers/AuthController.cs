@@ -75,12 +75,7 @@ namespace TaskAi.Api.Controllers
                 new Claim(ClaimTypes.Name, user.Username ?? "")
             };
 
-            // TEST: Hardcoding the key here to match the hardcoded key in Program.cs
-            //var testKey = "abcdefghijklmnopqrstuvwxyzabcdef";
-            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(testKey));
-
-            var testKey = "abcdefghijklmnopqrstuvwxyzabcdef";
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(testKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -88,7 +83,7 @@ namespace TaskAi.Api.Controllers
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(60), // Hardcoded for test
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes > 0 ? _jwtSettings.ExpirationMinutes : 60),
                 signingCredentials: creds
             );
 

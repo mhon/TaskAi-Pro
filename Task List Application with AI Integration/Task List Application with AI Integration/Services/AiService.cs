@@ -7,7 +7,6 @@ namespace TaskAi.Api.Services
 {
     public class AiService
     {
-        //private readonly string _apiKey = "AIzaSyDjK57u3RnHOg5SgC4eLFb8kYS8t1dCgw0";
         private readonly string _apiKey;
         private readonly GoogleAI _ai;
 
@@ -19,8 +18,7 @@ namespace TaskAi.Api.Services
 
         public AiService(IConfiguration configuration)
         {
-            // Read from appsettings.json using the section:key format
-            _apiKey = configuration["Gemini:ApiKey"] ?? string.Empty;
+            _apiKey = configuration["Gemini:ApiKey"] ?? configuration["GEMINI_API_KEY"] ?? string.Empty;
 
             // Initialize with the key we just read
             _ai = new GoogleAI(_apiKey, "v1");
