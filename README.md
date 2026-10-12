@@ -8,6 +8,17 @@ An AI-powered task management application built with **Angular 19** and **ASP.NE
 * **Task Management:** Full CRUD (Create, Read, Update, Delete) functionality with a PostgreSQL backend.
 * **Responsive Design:** Clean, modern UI built with Angular.
 
+## 📸 Screenshots
+
+### Login page
+![TaskAi login page](docs/screenshots/login-page.png)
+
+### TaskAi Dashboard
+![TaskAi Dashboard](docs/screenshots/taskai-dashboard.png)
+
+### AI Task Insight
+![AI Task Insight](docs/screenshots/ai-task-insight.png)
+
 ---
 
 ## 🛠️ Tech Stack
